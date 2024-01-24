@@ -13,7 +13,6 @@ import Domain
 final class MatchViewModelTests: XCTestCase {
 
     var teamUseCase: TeamUseCaseMock!
-
     var matchUseCase: MatchUseCaseMock!
     var matchNavigator: MatchNavigatorMock!
     var matchViewModel: MatchViewModel!
@@ -22,13 +21,10 @@ final class MatchViewModelTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-
         teamUseCase = TeamUseCaseMock()
-
         matchUseCase = MatchUseCaseMock()
         matchNavigator = MatchNavigatorMock()
-
-        setupViewModelWithMatchType(.upcoming)
+        setupViewModel(filter: .init(type: .upcoming))
     }
 
     func test_transform_loadTrigger_updateEmited() {
@@ -65,7 +61,7 @@ final class MatchViewModelTests: XCTestCase {
         let input = createMockInput(loadTrigger: trigger.eraseToAnyPublisher(),
                                     selectPreviousMatchTrigger: select.eraseToAnyPublisher())
 
-        setupViewModelWithMatchType(.previous)
+        setupViewModel(filter: .init(type: .previous))
 
         let output = matchViewModel.transform(input: input)
 
@@ -82,11 +78,84 @@ final class MatchViewModelTests: XCTestCase {
         XCTAssert(matchNavigator.toHighlight_get_called)
         XCTAssertEqual(matchNavigator.toHighlight_match, matches[matches.count - 1])
     }
+
+    func test_transform_applyFilterTrigger_upcoming_mapMatchesToViewModel() {
+        let trigger = PassthroughSubject<Void, Never>()
+        let input = createMockInput(loadTrigger: trigger.eraseToAnyPublisher())
+
+        setupViewModel(filter: .init(type: .upcoming))
+
+        let matches = createMockMatches()
+        matchUseCase._matches.value = matches
+
+        let output = matchViewModel.transform(input: input)
+        output.load
+            .sink { _ in }
+            .store(in: &subcriptions)
+
+        output.matches
+            .sink { _matches in
+                XCTAssert(_matches.count == 3)
+                XCTAssertEqual(_matches[0].home, matches[0].home)
+                XCTAssertEqual(_matches[0].away, matches[0].away)
+            }
+            .store(in: &subcriptions)
+
+        trigger.send(())
+    }
+
+    func test_transform_applyFilterTrigger_upcomingAndTeams_mapMatchesToViewModel() {
+        let trigger = PassthroughSubject<Void, Never>()
+        let input = createMockInput(loadTrigger: trigger.eraseToAnyPublisher())
+
+        let teams = createMockTeams()
+        setupViewModel(filter: .init(type: .upcoming, teams: [teams.first!]))
+
+        let matches = createMockMatches()
+        matchUseCase._matches.value = matches
+
+        let output = matchViewModel.transform(input: input)
+        output.load
+            .sink { _ in }
+            .store(in: &subcriptions)
+
+        output.matches
+            .sink { _matches in
+                XCTAssert(_matches.count == 1)
+            }
+            .store(in: &subcriptions)
+
+        trigger.send(())
+    }
+
+    func test_transform_applyFilterTrigger_upcomingAndTeams_withEmptyResult_mapMatchesToViewModel() {
+        let trigger = PassthroughSubject<Void, Never>()
+        let input = createMockInput(loadTrigger: trigger.eraseToAnyPublisher())
+
+        let teams = createMockTeams()
+        setupViewModel(filter: .init(type: .upcoming, teams: [teams.last!]))
+
+        let matches = createMockMatches()
+        matchUseCase._matches.value = matches
+
+        let output = matchViewModel.transform(input: input)
+        output.load
+            .sink { _ in }
+            .store(in: &subcriptions)
+
+        output.matches
+            .sink { _matches in
+                XCTAssert(_matches.isEmpty)
+            }
+            .store(in: &subcriptions)
+
+        trigger.send(())
+    }
 }
 
 private extension MatchViewModelTests {
-    func setupViewModelWithMatchType(_ matchType: MatchType = .upcoming) {
-        matchViewModel = .init(filter: .init(type: matchType),
+    func setupViewModel(filter: Filter) {
+        matchViewModel = .init(filter: filter,
                                matchUseCase: matchUseCase,
                                teamUseCase: teamUseCase,
                                navigator: matchNavigator)
@@ -113,6 +182,18 @@ private extension MatchViewModelTests {
                   home: "Serious Lions", away: "Growling Tigers", highlights: "https://tstzj.s3.amazonaws.com/highlights.mp4", type: .previous),
             .init(date: "2023-05-23T18:00:00.000Z", description: "",
                   home: "Blue dragon", away: "Royal Knights", highlights: "https://tstzj.s3.amazonaws.com/highlights.mp4", type: .previous)
+        ]
+    }
+
+    func createMockTeams() -> [Team] {
+        [
+            .init(id: "1", name: "Blue dragon", logoURL: ""),
+            .init(id: "2", name: "red dragon", logoURL: ""),
+            .init(id: "3", name: "Royal Knights", logoURL: ""),
+            .init(id: "4", name: "Chill Elephant", logoURL: ""),
+            .init(id: "5", name: "Win King", logoURL: ""),
+            .init(id: "6", name: "Serious Lions", logoURL: ""),
+            .init(id: "7", name: "Growling Tigers", logoURL: "")
         ]
     }
 }

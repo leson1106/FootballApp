@@ -325,12 +325,36 @@
 			path = FootballAppUITests;
 			sourceTree = "<group>";
 		};
-		22FE63E12B6115C400512629 /* ViewModelTests */ = {
+		22DD41AD2B617F2D008BA895 /* Match */ = {
 			isa = PBXGroup;
 			children = (
 				22FE63DC2B6115BE00512629 /* MatchNavigatorMock.swift */,
-				22FE63D92B6115BE00512629 /* MatchUseCaseMock.swift */,
 				22FE63DB2B6115BE00512629 /* MatchViewModelTests.swift */,
+			);
+			path = Match;
+			sourceTree = "<group>";
+		};
+		22DD41AE2B617F33008BA895 /* Team */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Team;
+			sourceTree = "<group>";
+		};
+		22DD41AF2B617F3A008BA895 /* TeamDetail */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TeamDetail;
+			sourceTree = "<group>";
+		};
+		22FE63E12B6115C400512629 /* ViewModelTests */ = {
+			isa = PBXGroup;
+			children = (
+				22DD41AF2B617F3A008BA895 /* TeamDetail */,
+				22DD41AE2B617F33008BA895 /* Team */,
+				22DD41AD2B617F2D008BA895 /* Match */,
+				22FE63D92B6115BE00512629 /* MatchUseCaseMock.swift */,
 				22FE63DA2B6115BE00512629 /* TeamUseCaseMock.swift */,
 			);
 			path = ViewModelTests;

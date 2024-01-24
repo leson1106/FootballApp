@@ -18,12 +18,7 @@ class MatchUseCaseMock: MatchUseCase {
     let _matches: CurrentValueSubject<[Match], Never> = .init([])
 
     var update_get_called = false
-
-    var updatedMatches = [Match]()
-
     func update() {
         update_get_called = true
-
-        _matches.send(updatedMatches)
     }
 }
