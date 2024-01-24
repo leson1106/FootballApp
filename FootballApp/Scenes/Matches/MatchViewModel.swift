@@ -44,7 +44,7 @@ final class MatchViewModel: ViewModelType {
             }
             .eraseToAnyPublisher()
 
-        let result = applyFilter
+        let matches = applyFilter
             .combineLatest(fetchMatches) { filter, matches in
                 let _matches = matches.filter { $0.type == filter.type }
                 if filter.teams.isEmpty {
@@ -60,7 +60,7 @@ final class MatchViewModel: ViewModelType {
             .share()
             .eraseToAnyPublisher()
 
-        let toFilter = input.openFilterTrigger
+        let openFilter = input.openFilterTrigger
             .withLatestFrom(fetchTeams) { _, teams in
                 teams
             }
@@ -69,8 +69,8 @@ final class MatchViewModel: ViewModelType {
             })
             .eraseToAnyPublisher()
 
-        let toHighlight = input.selectPreviousMatchTrigger
-            .withLatestFrom(result) { indexPath, data in
+        let selectedPreviousMatch = input.selectPreviousMatchTrigger
+            .withLatestFrom(matches) { indexPath, data in
                 data[indexPath.row]
             }
             .filter { $0.highlights != nil }
@@ -80,10 +80,10 @@ final class MatchViewModel: ViewModelType {
             .eraseToAnyPublisher()
 
         return Output(load: load,
-                      matches: result,
+                      matches: matches,
                       logos: logos,
-                      openFilter: toFilter,
-                      selectedPreviousMatch: toHighlight)
+                      openFilter: openFilter,
+                      selectedPreviousMatch: selectedPreviousMatch)
     }
 }
 

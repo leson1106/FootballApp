@@ -142,12 +142,12 @@ class MatchCell: UICollectionViewCell {
     }
 }
 
-fileprivate extension Match {
+fileprivate extension Domain.Match {
     var timeString: String {
-        ""
+        DateHelper.convert(dateString: date, to: "HH : mm")
     }
 
     var dateString: String {
-        ""
+        DateHelper.convert(dateString: date, to: "dd MMM")
     }
 }

@@ -37,15 +37,49 @@ final class CoreDataRepositoryMock: XCTestCase {
     }
 
     func test_insert_teams() {
-        let teams: [Team] = [
-            .init(id: "1", name: "Red dragon", logoURL: ""),
-            .init(id: "2", name: "Blue dragon", logoURL: "")
-        ]
-
+        let teams = createMockTeams()
         mockCoreDataRepository.save(teams: teams)
 
-        let fetchedTeams = try? mockCoreDataRepository.fetchTeams()
+        let fetchedTeams = (try? mockCoreDataRepository.fetchTeams()) ?? []
 
-        XCTAssertTrue((fetchedTeams ?? []).count == 2)
+        XCTAssert(fetchedTeams.count == teams.count)
+    }
+
+    func test_insert_matches() {
+        let matches = createMockMatches()
+        mockCoreDataRepository.save(matches: matches)
+
+        let fetchedMatches = (try? mockCoreDataRepository.fetchMatches()) ?? []
+        
+        XCTAssert(fetchedMatches.count == matches.count)
+    }
+}
+
+private extension CoreDataRepositoryMock {
+    func createMockMatches() -> [Match] {
+        [
+            .init(date: "2023-01-23T18:00:00.000Z", description: "",
+                  home: "Blue dragon", away: "Red dragon", type: .upcoming),
+            .init(date: "2023-02-23T18:00:00.000Z", description: "",
+                  home: "Royal Knights", away: "Red dragon", type: .upcoming),
+            .init(date: "2023-03-23T18:00:00.000Z", description: "",
+                  home: "Chill Elephant", away: "Win King", type: .upcoming),
+            .init(date: "2023-04-23T18:00:00.000Z", description: "",
+                  home: "Serious Lions", away: "Growling Tigers", type: .previous),
+            .init(date: "2023-05-23T18:00:00.000Z", description: "",
+                  home: "Blue dragon", away: "Royal Knights", type: .previous)
+        ]
+    }
+
+    func createMockTeams() -> [Team] {
+        [
+            .init(id: "1", name: "Blue dragon", logoURL: ""),
+            .init(id: "2", name: "red dragon", logoURL: ""),
+            .init(id: "3", name: "Royal Knights", logoURL: ""),
+            .init(id: "4", name: "Chill Elephant", logoURL: ""),
+            .init(id: "5", name: "Win King", logoURL: ""),
+            .init(id: "6", name: "Serious Lions", logoURL: ""),
+            .init(id: "7", name: "Growling Tigers", logoURL: "")
+        ]
     }
 }
