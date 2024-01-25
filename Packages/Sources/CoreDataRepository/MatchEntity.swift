@@ -13,10 +13,6 @@ public class MatchEntity: NSManagedObject, Identifiable {
 
     static let entityName = "MatchEntity"
 
-    public var id: String { //Local id
-        [date, home, away].joined(separator: "|")
-    }
-
     @NSManaged public var date: String
     @NSManaged public var matchDescription: String
     @NSManaged public var home: String
