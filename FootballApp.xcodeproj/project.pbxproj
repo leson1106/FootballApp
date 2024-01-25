@@ -211,10 +211,10 @@
 		2283310C2B6103FD009BFEF3 /* Teams */ = {
 			isa = PBXGroup;
 			children = (
-				2283310D2B6103FD009BFEF3 /* TeamViewController.swift */,
-				2283310E2B6103FD009BFEF3 /* TeamNavigator.swift */,
 				228331102B6103FD009BFEF3 /* TeamLogoCell.swift */,
 				228331112B6103FD009BFEF3 /* TeamLogoView.swift */,
+				2283310D2B6103FD009BFEF3 /* TeamViewController.swift */,
+				2283310E2B6103FD009BFEF3 /* TeamNavigator.swift */,
 				228331132B6103FD009BFEF3 /* TeamViewModel.swift */,
 				228331122B6103FD009BFEF3 /* TeamsScene.swift */,
 			);
