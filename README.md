@@ -1,5 +1,5 @@
 ## Architecture
-MVVM & Combine, seperate structure into several layers which is easy to maintain and do test
+MVVM & Combine, separate structure into several layers which is easy to maintain and do test
 
 - **View**: UI part, receive user's interaction and pass it to ViewModel
 - **ViewModel**: Center of the entire architecture, navigate actions from View then execute on UseCase / Navigator, also has data binding mechanism with View
@@ -12,8 +12,8 @@ MVVM & Combine, seperate structure into several layers which is easy to maintain
 - **Solution**: I've changed entity module to `Global namespace` then loaded `momd extension` from module itself. I also added name spacing @objc for these entities, to map correctly with entity class name.
 
 ### Combine
-- **Issue**: I frequently use Rx instead of Combine. This is very first project I've worked with. When building this app, I ran into trouble when trying to understand the type of Combine's components. It's always nested to another when you applied any operators, such as: AnyPublisher with map become AnyPublisher<.AnyPublisherMap<AnyPublisher...>. I think it quite complicated to me.
-- **Approach**: After a few days dive into it, I don't think there is solution for this issue cause that's the way  framework operates. So, I guess I have to get used to it.
+- **Issue**: I frequently use Rx instead of Combine. This is the very first project I've worked with. When building this app, I ran into trouble when trying to understand the type of Combine's components. It's always nested to another when you apply any operators, such as AnyPublisher with map become AnyPublisher<AnyPublisherMap<AnyPublisher...>. Imagine if there are more operators: combineLatest, concat, etc, and how long the chain will be. I think it is quite complicated for me.
+- **Approach**: After a few days dive into it, I don't think there is a solution for this issue cause that's the way Combine framework operates. So, I guess I have to get used to it.
 
 ## Third parties
 - **Nuke**: Effectively fetching, caching image
