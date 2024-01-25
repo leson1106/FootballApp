@@ -65,7 +65,7 @@ final class MatchViewModelTests: XCTestCase {
 
         let output = matchViewModel.transform(input: input)
 
-        let matches = createMockMatches()
+        let matches = MatchUseCaseMock.createMockMatches()
         matchUseCase._matches.value = matches
 
         output.selectedPreviousMatch
@@ -85,7 +85,7 @@ final class MatchViewModelTests: XCTestCase {
 
         setupViewModel(filter: .init(type: .upcoming))
 
-        let matches = createMockMatches()
+        let matches = MatchUseCaseMock.createMockMatches()
         matchUseCase._matches.value = matches
 
         let output = matchViewModel.transform(input: input)
@@ -108,10 +108,10 @@ final class MatchViewModelTests: XCTestCase {
         let trigger = PassthroughSubject<Void, Never>()
         let input = createMockInput(loadTrigger: trigger.eraseToAnyPublisher())
 
-        let teams = createMockTeams()
+        let teams = TeamUseCaseMock.createMockTeams()
         setupViewModel(filter: .init(type: .upcoming, teams: [teams.first!]))
 
-        let matches = createMockMatches()
+        let matches = MatchUseCaseMock.createMockMatches()
         matchUseCase._matches.value = matches
 
         let output = matchViewModel.transform(input: input)
@@ -132,10 +132,10 @@ final class MatchViewModelTests: XCTestCase {
         let trigger = PassthroughSubject<Void, Never>()
         let input = createMockInput(loadTrigger: trigger.eraseToAnyPublisher())
 
-        let teams = createMockTeams()
+        let teams = TeamUseCaseMock.createMockTeams()
         setupViewModel(filter: .init(type: .upcoming, teams: [teams.last!]))
 
-        let matches = createMockMatches()
+        let matches = MatchUseCaseMock.createMockMatches()
         matchUseCase._matches.value = matches
 
         let output = matchViewModel.transform(input: input)
@@ -168,32 +168,5 @@ private extension MatchViewModelTests {
         .init(loadTrigger: loadTrigger,
               openFilterTrigger: openFilterTrigger,
               selectPreviousMatchTrigger: selectPreviousMatchTrigger)
-    }
-
-    func createMockMatches() -> [Match] {
-        [
-            .init(date: "2023-01-23T18:00:00.000Z", description: "",
-                  home: "Blue dragon", away: "Red dragon", type: .upcoming),
-            .init(date: "2023-02-23T18:00:00.000Z", description: "",
-                  home: "Royal Knights", away: "Red dragon", type: .upcoming),
-            .init(date: "2023-03-23T18:00:00.000Z", description: "",
-                  home: "Chill Elephant", away: "Win King", type: .upcoming),
-            .init(date: "2023-04-23T18:00:00.000Z", description: "",
-                  home: "Serious Lions", away: "Growling Tigers", highlights: "https://tstzj.s3.amazonaws.com/highlights.mp4", type: .previous),
-            .init(date: "2023-05-23T18:00:00.000Z", description: "",
-                  home: "Blue dragon", away: "Royal Knights", highlights: "https://tstzj.s3.amazonaws.com/highlights.mp4", type: .previous)
-        ]
-    }
-
-    func createMockTeams() -> [Team] {
-        [
-            .init(id: "1", name: "Blue dragon", logoURL: ""),
-            .init(id: "2", name: "red dragon", logoURL: ""),
-            .init(id: "3", name: "Royal Knights", logoURL: ""),
-            .init(id: "4", name: "Chill Elephant", logoURL: ""),
-            .init(id: "5", name: "Win King", logoURL: ""),
-            .init(id: "6", name: "Serious Lions", logoURL: ""),
-            .init(id: "7", name: "Growling Tigers", logoURL: "")
-        ]
     }
 }

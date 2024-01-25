@@ -24,11 +24,14 @@ final class TeamDetailViewModel: ViewModelType {
     func transform(input: Input) -> Output {
         let fetchMatches = useCase.matches
 
-        let result = input.loadTrigger
-            .flatMap { fetchMatches }
+        let team = CurrentValueSubject<Team, Never>(team)
             .eraseToAnyPublisher()
 
-        let team = CurrentValueSubject<Team, Never>(team)
+        let result = input.loadTrigger
+            .flatMap { fetchMatches }
+            .withLatestFrom(team, resultSelector: { matches, team in
+                matches.filter { $0.isContain(team: team) }
+            })
             .eraseToAnyPublisher()
 
         return Output(team: team, matches: result)
@@ -43,5 +46,11 @@ extension TeamDetailViewModel {
     struct Output {
         let team: AnyPublisher<Team, Never>
         let matches: AnyPublisher<[Match], Never>
+    }
+}
+
+fileprivate extension Match {
+    func isContain(team: Team) -> Bool {
+        return self.home == team.name || self.away == team.name
     }
 }

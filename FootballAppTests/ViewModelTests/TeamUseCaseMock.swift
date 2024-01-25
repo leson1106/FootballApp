@@ -22,3 +22,17 @@ class TeamUseCaseMock: TeamUseCase {
         update_get_called = true
     }
 }
+
+extension TeamUseCaseMock {
+    static func createMockTeams() -> [Team] {
+        [
+            .init(id: "1", name: "Blue dragon", logoURL: ""),
+            .init(id: "2", name: "red dragon", logoURL: ""),
+            .init(id: "3", name: "Royal Knights", logoURL: ""),
+            .init(id: "4", name: "Chill Elephant", logoURL: ""),
+            .init(id: "5", name: "Win King", logoURL: ""),
+            .init(id: "6", name: "Serious Lions", logoURL: ""),
+            .init(id: "7", name: "Growling Tigers", logoURL: "")
+        ]
+    }
+}
