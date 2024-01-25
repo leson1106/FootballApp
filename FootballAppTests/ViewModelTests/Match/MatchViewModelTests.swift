@@ -1,6 +1,6 @@
 //
 //  MatchViewModelTests.swift
-//  FoodBallAppTests
+//  FootballAppTests
 //
 //  Created by Son Le on 23/01/2024.
 //
