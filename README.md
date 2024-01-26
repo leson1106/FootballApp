@@ -18,3 +18,6 @@ MVVM & Combine, separate structure into several layers which is easy to maintain
 ## Third parties
 - **Nuke**: Effectively fetching, caching image
 - **SnapKit**: Autolayout programmatically
+
+## Showcase GIF
+![](https://github.com/leson1106/FootballApp/blob/main/showcase.gif)
