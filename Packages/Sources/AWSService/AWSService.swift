@@ -27,25 +27,8 @@ extension AWSClient: AWSService {
             throw APIError.badRequest
         }
 
-        return try await withCheckedThrowingContinuation { continuation in
-            let task = session.dataTask(with: request) { data, response, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                    return
-                }
-
-                if let data {
-                    do {
-                        let result = try JSONDecoder().decode(T.Response.self, from: data)
-                        continuation.resume(returning: result)
-                    } catch {
-                        continuation.resume(throwing: APIError.parserError(reason: error.localizedDescription))
-                    }
-                } else {
-                    continuation.resume(throwing: APIError.unknown)
-                }
-            }
-            task.resume()
-        }
+        let (data, _) = try await session.data(for: request)
+        let decoder = JSONDecoder()
+        return try decoder.decode(T.Response.self, from: data)
     }
 }

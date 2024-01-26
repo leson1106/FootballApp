@@ -106,6 +106,7 @@ private extension MatchViewController {
 
         output
             .matches
+            .filter { !$0.isEmpty }
             .combineLatest(output.logos) { (matches, logos) -> [MatchCellModel] in
                 matches.map { MatchCellModel(match: $0,
                                              homeLogoURL: logos[$0.home],

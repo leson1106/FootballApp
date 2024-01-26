@@ -98,6 +98,7 @@ private extension TeamViewController {
 
         output
             .teams
+            .filter { !$0.isEmpty }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] teams in
                 guard let self else { return }

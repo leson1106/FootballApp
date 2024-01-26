@@ -105,6 +105,7 @@ private extension TeamDetailViewController {
 
         output
             .matches
+            .filter { !$0.isEmpty }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] matches in
                 guard let self else { return }
